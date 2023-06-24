@@ -1,7 +1,5 @@
 package com.example.springdemo;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.mapper.UserMapper;
 import org.junit.jupiter.api.Test;

@@ -12,10 +12,10 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    User queryById(int id);
+    User queryByUserId(Long id);
 
-    User queryByName(String name);
+    User queryByUserName(String name);
 
-    boolean modifyNicknameById(int id);
+    boolean modifyNicknameByUserId(Long id);
 
 }

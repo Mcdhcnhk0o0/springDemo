@@ -21,9 +21,14 @@ public class UserController {
     }
 
     @GetMapping(value = "/add")
-    public boolean addUser(@RequestParam(value = "name") String name, @RequestParam(value = "password") String password){
+    public boolean addUser(
+            @RequestParam(value = "email") String email,
+            @RequestParam(value = "name") String name,
+            @RequestParam(value = "password") String password) {
         User user = new User();
+        user.setEmail(email);
         user.setUserName(name);
+        user.setUserNickname(name);
         user.setPassword(password);
         return userService.addUser(user);
     }

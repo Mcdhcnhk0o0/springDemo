@@ -1,5 +1,6 @@
 package com.example.springdemo.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.service.UserService;
@@ -32,17 +33,23 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User queryById(int id) {
-        return null;
+    public User queryByUserId(Long id) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id", id);
+        List<User> userList = userMapper.selectList(wrapper);
+        return userList == null ? null : userList.get(0);
     }
 
     @Override
-    public User queryByName(String name) {
-        return null;
+    public User queryByUserName(String name) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_name", name);
+        List<User> userList = userMapper.selectList(wrapper);
+        return userList == null ? null : userList.get(0);
     }
 
     @Override
-    public boolean modifyNicknameById(int id) {
+    public boolean modifyNicknameByUserId(Long id) {
         return false;
     }
 }
