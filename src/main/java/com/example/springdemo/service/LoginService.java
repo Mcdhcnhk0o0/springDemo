@@ -6,9 +6,11 @@ import com.example.springdemo.dao.User;
 
 public interface LoginService {
 
-    boolean signUp(User user);
+    boolean signUp(String email, String userName, String password);
 
-    Result<LoginResult> login(User user);
+    Result<LoginResult> loginByUserName(String userName, String password);
 
-    Result<LoginResult> logout(User user);
+    Result<LoginResult> loginByEmail(String email, String password);
+
+    Result<LoginResult> logout(String userName, String email);
 }

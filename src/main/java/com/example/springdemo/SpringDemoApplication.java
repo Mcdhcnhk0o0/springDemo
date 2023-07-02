@@ -11,7 +11,7 @@ public class SpringDemoApplication {
     public static void main(String[] args) {
         // *y;:84@HLGC)UYz
         SpringApplication.run(SpringDemoApplication.class, args);
-        System.out.println("==== hello world ====");
+        System.out.println("==== Spring Demo start ====");
     }
 
 }
