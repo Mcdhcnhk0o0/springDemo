@@ -14,4 +14,16 @@ public class Result<T> {
 
     private T data;
 
+    public Result<T> success() {
+        this.code = ResponseInfo.SUCCESS.getCode();
+        this.message = ResponseInfo.SUCCESS.getMessage();
+        return this;
+    }
+
+    public Result<T> fail() {
+        this.code = ResponseInfo.FAIL.getCode();
+        this.message = ResponseInfo.FAIL.getMessage();
+        return this;
+    }
+
 }

@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "spring.custom.baidu",
+      "type": "java.lang.String",
+      "description": "Description for spring.custom.baidu."
+    }
+  ] }
