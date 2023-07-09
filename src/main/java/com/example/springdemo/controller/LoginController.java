@@ -5,7 +5,6 @@ import com.example.springdemo.annotation.UserLoginToken;
 import com.example.springdemo.bean.LoginResult;
 import com.example.springdemo.bean.Result;
 import com.example.springdemo.service.LoginService;
-import com.example.springdemo.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

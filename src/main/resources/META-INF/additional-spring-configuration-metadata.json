@@ -1,8 +1,23 @@
 {
   "properties": [
     {
-      "name": "spring.custom.baidu",
+      "name": "spring.custom.ali",
       "type": "java.lang.String",
-      "description": "Description for spring.custom.baidu."
+      "description": "Description for spring.custom.ali."
+    },
+    {
+      "name": "spring.custom.baidu.ocr.appId",
+      "type": "java.lang.String",
+      "description": "Description for spring.custom.baidu.orc.appId."
+    },
+    {
+      "name": "spring.custom.baidu.ocr.apiKey",
+      "type": "java.lang.String",
+      "description": "Description for spring.custom.baidu.orc.apiKey."
+    },
+    {
+      "name": "spring.custom.baidu.ocr.apiSecret",
+      "type": "java.lang.String",
+      "description": "Description for spring.custom.baidu.orc.apiSecret."
     }
   ] }
