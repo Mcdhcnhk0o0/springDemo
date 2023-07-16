@@ -9,9 +9,9 @@ import org.springframework.web.method.HandlerMethod;
 @ControllerAdvice
 public class ErrorControllerAdvice {
 
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(Exception.class)
     @ResponseBody
-    public Result<String> handleException(RuntimeException ex, HandlerMethod hm) {
+    public Result<String> handleException(Exception ex, HandlerMethod hm) {
         Result<String> result = new Result<>();
         result.setCode(400);
         result.setMessage(ex.getMessage());

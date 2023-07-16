@@ -17,6 +17,7 @@ public class LoginController {
     @Resource
     private LoginService loginService;
 
+    @PassToken
     @GetMapping("/signup")
     public boolean signUp(
             @RequestParam(value = "email") String email,

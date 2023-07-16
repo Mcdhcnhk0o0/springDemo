@@ -1,6 +1,12 @@
 package com.example.springdemo.dao
 
+import com.baomidou.mybatisplus.annotation.IdType
+import com.baomidou.mybatisplus.annotation.TableId
+import com.baomidou.mybatisplus.annotation.TableName
+
+@TableName("user_info")
 data class User(
+    @TableId(type = IdType.AUTO)
     var userId: Long?,
     var email: String?,
     var userName: String?,
