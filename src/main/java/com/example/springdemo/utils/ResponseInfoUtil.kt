@@ -15,3 +15,10 @@ enum class LoginResultInfo(val code: Int, val message: String) {
     USER_NOT_LOGIN(200002, "用户还未登录"),
     LOGOUT_SUCCESS(200003, "注销成功"),
 }
+
+
+enum class ArticleResultInfo(val code: Int, val message: String) {
+    ARTICLE_NOT_EXIST(400101, "文章不存在"),
+    ARTICLE_CREATE_SUCCESS(200101, "文章创建成功"),
+    ARTICLE_UPDATE_SUCCESS(200102, "文章更新成功")
+}

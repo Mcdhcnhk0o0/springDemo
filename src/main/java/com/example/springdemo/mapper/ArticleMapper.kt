@@ -1,4 +1,8 @@
 package com.example.springdemo.mapper
 
-interface ArticleMapper {
+import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import com.example.springdemo.dao.Article
+
+interface ArticleMapper: BaseMapper<Article> {
+
 }

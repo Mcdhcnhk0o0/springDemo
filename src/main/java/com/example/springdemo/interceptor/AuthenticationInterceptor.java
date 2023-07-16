@@ -48,7 +48,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             try {
                 userId = JWTUtil.Instance.getUserIdFromToken(token);
             } catch (Exception e) {
-                throw new RuntimeException("token校验失败");
+                throw new RuntimeException("token校验失败, " + e.getMessage());
             }
             QueryWrapper<User> wrapper = new QueryWrapper<>();
             wrapper.eq("user_id", userId);
@@ -60,7 +60,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             try {
                 JWTUtil.Instance.verifyUserByToken(targetUser, token);
             } catch (Exception e) {
-                throw new RuntimeException("token验证失败");
+                throw new RuntimeException("token验证失败, " + e.getMessage());
             }
             return true;
         }
