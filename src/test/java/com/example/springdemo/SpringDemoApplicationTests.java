@@ -3,6 +3,7 @@ package com.example.springdemo;
 import com.example.springdemo.config.BaiduOcrConfig;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.mapper.UserMapper;
+import com.example.springdemo.utils.JWTUtil;
 import com.example.springdemo.utils.JasyptEncryptorUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,12 +40,30 @@ class SpringDemoApplicationTests {
 
     @Test
     void encryptorTest() {
-        String data = "GLXCMWmKAVNesI8qCPxrl5kjLBtL7sv9";
-        String pwd = "wqqduan";
+        String data = "321312312312";
+        String pwd = "hello";
         String afterEncryptor = JasyptEncryptorUtil.encrypt(data, pwd);
         System.out.println(afterEncryptor);
         String before = JasyptEncryptorUtil.decrypt(afterEncryptor, pwd);
         System.out.println(before);
+    }
+
+    @Test
+    void jwtTest() {
+        User user = new User();
+        user.setUserId(123L);
+        user.setPassword("123456");
+        String token = JWTUtil.Instance.createToken(user.getUserId().toString(), user.getPassword());
+        try {
+            JWTUtil.Instance.verifyUserByToken(user, token);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+        System.out.println("JWT test over");
+
+
+
     }
 
 }

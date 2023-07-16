@@ -59,8 +59,8 @@ public class LoginServiceImpl implements LoginService {
             loginStatus = LoginStatusManager.getInstance().addLoginStatus(currentUser);
         }
         return new LoginResultBuilder()
-                .setUser(privacyFilter(currentUser))
                 .setToken(generateToken(currentUser))
+                .setUser(privacyFilter(currentUser))
                 .setStatusCode(loginResultInfo.getCode())
                 .setStatusMessage(loginResultInfo.getMessage())
                 .setLatestLoginTime(loginStatus.getLoginGmt())
@@ -106,10 +106,16 @@ public class LoginServiceImpl implements LoginService {
     }
 
     private User privacyFilter(User user) {
+        // bugfix：改動現有的user對象會引起不可預期的問題
+        User outUser = new User();
         if (user != null) {
-            user.setEmail("protected****" + user.getEmail());
-            user.setPassword("unknown");
+            outUser.setUserId(user.getUserId());
+            outUser.setUserName(user.getUserName());
+            outUser.setUserNickname(user.getUserNickname());
+            outUser.setPassword("unknown");
+            outUser.setEmail("protected****" + user.getEmail());
+            outUser.setExtraInfo(user.getExtraInfo());
         }
-        return user;
+        return outUser;
     }
 }
