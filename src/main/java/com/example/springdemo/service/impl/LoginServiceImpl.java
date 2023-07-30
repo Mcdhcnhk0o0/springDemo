@@ -6,6 +6,7 @@ import com.example.springdemo.dao.User;
 import com.example.springdemo.factory.LoginResultBuilder;
 import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.service.LoginService;
+import com.example.springdemo.service.UserDetailService;
 import com.example.springdemo.service.UserService;
 import com.example.springdemo.utils.JWTUtil;
 import com.example.springdemo.utils.LoginResultInfo;
@@ -24,10 +25,10 @@ import java.util.concurrent.TimeUnit;
 public class LoginServiceImpl implements LoginService {
 
     @Resource
-    private UserMapper userMapper;
+    private UserService userService;
 
     @Resource
-    private UserService userService;
+    private UserDetailService userDetailService;
 
     @Resource
     @Qualifier("redisTemplate")
@@ -35,18 +36,17 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public boolean signUp(String email, String userName, String password) {
-        User user = new User();
-        user.setEmail(email);
-        user.setUserName(userName);
-        user.setUserNickname(userName);
-        user.setPassword(password);
-        userMapper.insert(user);
-        return true;
+        User user = userService.addUser(email, userName, password);
+        if (user != null && user.getUserId() != null) {
+            userDetailService.addUserDetail(user.getUserId(), null, null, null, null, null);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public Result<LoginResult> loginByUserName(String userName, String password) {
-        User currentUser = userService.queryByUserName(userName);
+    public Result<LoginResult> loginByEmail(String email, String password) {
+        User currentUser = userService.getUserByEmail(email);
         if (currentUser == null || currentUser.getUserId() == null) {
             return new LoginResultBuilder()
                     .setStatusCode(LoginResultInfo.USER_NOT_EXIST.getCode())
@@ -77,13 +77,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Result<LoginResult> loginByEmail(String email, String password) {
-        return null;
-    }
-
-    @Override
-    public Result<LoginResult> logout(String userName, String email) {
-        User currentUser = userService.queryByUserName(userName);
+    public Result<LoginResult> logout(Long userId, String email) {
+        User currentUser = userService.getUserById(userId);
         if (currentUser == null || currentUser.getUserId() == null) {
             return new LoginResultBuilder()
                     .setStatusCode(LoginResultInfo.USER_NOT_EXIST.getCode())

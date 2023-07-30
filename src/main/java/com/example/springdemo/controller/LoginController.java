@@ -29,22 +29,22 @@ public class LoginController {
     }
 
     @PassToken
-    @GetMapping("loginByUserName")
-    public Result<LoginResult> loginByUserName(
-            @RequestParam(value = "userName") String userName,
+    @GetMapping("loginByEmail")
+    public Result<LoginResult> loginByEmail(
+            @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password) {
 
-        return loginService.loginByUserName(userName, password);
+        return loginService.loginByEmail(email, password);
 
     }
 
     @UserLoginToken
     @GetMapping("logout")
     public Result<LoginResult> logout(
-            @RequestParam(value = "name") String name,
+            @RequestParam(value = "userId") Long userId,
             @RequestParam(value = "email", required = false) String email) {
 
-        return loginService.logout(name, email);
+        return loginService.logout(userId, email);
 
     }
 

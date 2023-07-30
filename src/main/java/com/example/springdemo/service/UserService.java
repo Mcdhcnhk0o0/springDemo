@@ -6,16 +6,18 @@ import java.util.List;
 
 public interface UserService {
 
-    boolean addUser(User user);
+    User addUser(String email, String userName, String password);
 
-    boolean removeUser(User user);
+    boolean modifyUserName(Long id, String userName, String nickName);
+
+    boolean modifyPassword(Long id, String password);
+
+    boolean removeUser(Long id);
 
     List<User> getAllUsers();
 
-    User queryByUserId(Long id);
+    User getUserById(Long id);
 
-    User queryByUserName(String name);
-
-    boolean modifyNicknameByUserId(Long id);
+    User getUserByEmail(String name);
 
 }

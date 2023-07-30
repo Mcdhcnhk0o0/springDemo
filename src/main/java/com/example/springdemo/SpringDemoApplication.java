@@ -12,6 +12,7 @@ public class SpringDemoApplication {
         // *y;:84@HLGC)UYz
         SpringApplication.run(SpringDemoApplication.class, args);
         System.out.println("==== Spring Demo start ====");
+        System.out.println(System.currentTimeMillis());
     }
 
 }
