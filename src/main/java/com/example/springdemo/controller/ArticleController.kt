@@ -1,8 +1,8 @@
 package com.example.springdemo.controller
 
 import com.example.springdemo.annotation.UserLoginToken
-import com.example.springdemo.bean.Result
-import com.example.springdemo.bean.ArticleResult
+import com.example.springdemo.bean.result.Result
+import com.example.springdemo.bean.result.ArticleResult
 import com.example.springdemo.dao.Article
 import com.example.springdemo.service.ArticleService
 import com.example.springdemo.utils.JWTUtil

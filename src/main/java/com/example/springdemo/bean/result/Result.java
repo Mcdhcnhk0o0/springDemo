@@ -1,4 +1,4 @@
-package com.example.springdemo.bean;
+package com.example.springdemo.bean.result;
 
 import com.example.springdemo.utils.ResponseInfo;
 import lombok.Data;

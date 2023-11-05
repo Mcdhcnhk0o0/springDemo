@@ -1,8 +1,7 @@
 package com.example.springdemo.service;
 
-import com.example.springdemo.bean.OcrResult;
-import com.example.springdemo.bean.Result;
-import org.json.JSONObject;
+import com.example.springdemo.bean.result.OcrResult;
+import com.example.springdemo.bean.result.Result;
 
 public interface OcrService {
 

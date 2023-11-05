@@ -6,12 +6,16 @@ import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.utils.JWTUtil;
 import com.example.springdemo.utils.JasyptEncryptorUtil;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner.class)
 class SpringDemoApplicationTests {
 
     @Resource
@@ -39,13 +43,15 @@ class SpringDemoApplicationTests {
     }
 
     @Test
-    void encryptorTest() {
-        String data = "321312312312";
-        String pwd = "hello";
-        String afterEncryptor = JasyptEncryptorUtil.encrypt(data, pwd);
-        System.out.println(afterEncryptor);
-        String before = JasyptEncryptorUtil.decrypt(afterEncryptor, pwd);
-        System.out.println(before);
+    static void encryptorTest() {
+        List<String> dataList = new ArrayList<>();
+        dataList.add("test");
+        dataList.add("pwd");
+        String pwd = "hello world";
+        for (String data: dataList) {
+            String afterEncryptor = JasyptEncryptorUtil.encrypt(data, pwd);
+            System.out.println(afterEncryptor);
+        }
     }
 
     @Test
@@ -53,17 +59,20 @@ class SpringDemoApplicationTests {
         User user = new User();
         user.setUserId(123L);
         user.setPassword("123456");
-        String token = JWTUtil.Instance.createToken(user.getUserId().toString(), user.getPassword());
         try {
+            String token = JWTUtil.Instance.createToken(user.getUserId().toString(), user.getPassword());
             JWTUtil.Instance.verifyUserByToken(user, token);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
         System.out.println("JWT test over");
+        
+    }
 
-
-
+    public static void main(String[] args) {
+        // run your individual code
+        encryptorTest();
     }
 
 }

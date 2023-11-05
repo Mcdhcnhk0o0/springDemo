@@ -1,7 +1,7 @@
 package com.example.springdemo.controller;
 
 import com.example.springdemo.annotation.UserLoginToken;
-import com.example.springdemo.bean.Result;
+import com.example.springdemo.bean.result.Result;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.dao.UserDetail;
 import com.example.springdemo.service.UserDetailService;

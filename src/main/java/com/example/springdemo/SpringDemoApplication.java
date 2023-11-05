@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringDemoApplication {
 
     public static void main(String[] args) {
-        // *y;:84@HLGC)UYz
         SpringApplication.run(SpringDemoApplication.class, args);
         System.out.println("==== Spring Demo start ====");
         System.out.println(System.currentTimeMillis());

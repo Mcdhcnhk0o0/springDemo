@@ -2,8 +2,8 @@ package com.example.springdemo.controller;
 
 import com.example.springdemo.annotation.PassToken;
 import com.example.springdemo.annotation.UserLoginToken;
-import com.example.springdemo.bean.LoginResult;
-import com.example.springdemo.bean.Result;
+import com.example.springdemo.bean.result.LoginResult;
+import com.example.springdemo.bean.result.Result;
 import com.example.springdemo.service.LoginService;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,3 +49,4 @@ public class LoginController {
     }
 
 }
+// UPDATE mysql.user SET authentication_string='' WHERE user='root';  

@@ -1,7 +1,7 @@
 package com.example.springdemo.service;
 
-import com.example.springdemo.bean.LoginResult;
-import com.example.springdemo.bean.Result;
+import com.example.springdemo.bean.result.LoginResult;
+import com.example.springdemo.bean.result.Result;
 
 
 public interface LoginService {

@@ -1,7 +1,7 @@
 package com.example.springdemo.factory;
 
-import com.example.springdemo.bean.LoginResult;
-import com.example.springdemo.bean.Result;
+import com.example.springdemo.bean.result.LoginResult;
+import com.example.springdemo.bean.result.Result;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.utils.ResponseInfo;
 

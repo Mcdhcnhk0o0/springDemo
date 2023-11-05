@@ -1,7 +1,6 @@
 package com.example.springdemo.service.third;
 
 import com.baidu.aip.ocr.AipOcr;
-import com.example.springdemo.bean.Result;
 import com.example.springdemo.config.BaiduOcrConfig;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -35,10 +34,6 @@ public class BaiduOcrService {
 
     public void init() {}
 
-//    public static BaiduOcrService getInstance() {
-//        return InnerClass.instance;
-//    }
-
     public JSONObject getOcrResultWhenPicInUrl(String url) {
         if (client == null) {
             initializeOcrClient();
@@ -53,9 +48,9 @@ public class BaiduOcrService {
     }
 
     private void initializeOcrClient() {
-//        client = new AipOcr(APP_ID, API_KEY, API_SECRET);
         client = new AipOcr(customConfig.getAppId(), customConfig.getApiKey(), customConfig.getApiSecret());
         client.setConnectionTimeoutInMillis(2000);
         client.setSocketTimeoutInMillis(60000);
     }
+
 }

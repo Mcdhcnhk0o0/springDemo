@@ -1,6 +1,6 @@
 package com.example.springdemo.service
 
-import com.example.springdemo.bean.ArticleResult
+import com.example.springdemo.bean.result.ArticleResult
 import com.example.springdemo.dao.Article
 
 interface ArticleService {

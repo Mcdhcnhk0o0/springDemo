@@ -1,4 +1,4 @@
-package com.example.springdemo.bean;
+package com.example.springdemo.bean.result;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

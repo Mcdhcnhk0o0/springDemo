@@ -1,10 +1,9 @@
 package com.example.springdemo.service.impl;
 
-import com.example.springdemo.bean.LoginResult;
-import com.example.springdemo.bean.Result;
+import com.example.springdemo.bean.result.LoginResult;
+import com.example.springdemo.bean.result.Result;
 import com.example.springdemo.dao.User;
 import com.example.springdemo.factory.LoginResultBuilder;
-import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.service.LoginService;
 import com.example.springdemo.service.UserDetailService;
 import com.example.springdemo.service.UserService;

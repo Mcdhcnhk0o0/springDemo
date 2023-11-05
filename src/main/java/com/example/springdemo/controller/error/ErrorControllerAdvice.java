@@ -1,6 +1,6 @@
 package com.example.springdemo.controller.error;
 
-import com.example.springdemo.bean.Result;
+import com.example.springdemo.bean.result.Result;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
