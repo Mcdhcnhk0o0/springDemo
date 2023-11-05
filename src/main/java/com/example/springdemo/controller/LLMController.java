@@ -19,8 +19,7 @@ public class LLMController {
     @PassToken
     @GetMapping("/start")
     public Result<Boolean> startConnection() {
-        llmChatService.startConnection(0L);
-        return new Result<Boolean>();
+        return llmChatService.startConnection(0L);
     }
 
     @PassToken

@@ -18,10 +18,13 @@ public class LLMChatRecorder {
         private static final LLMChatRecorder instance = new LLMChatRecorder();
     }
 
+    private volatile boolean responseComplete = true;
+
     private final ConcurrentHashMap<Long, List<RoleContent>> recorder = new ConcurrentHashMap<>();
 
     public void record(Long userId, RoleContent content) {
         if (userId == null || content == null) {
+            responseComplete = true;
             return;
         }
         if (recorder.containsKey(userId)) {
@@ -35,6 +38,15 @@ public class LLMChatRecorder {
             contents.add(content);
             recorder.put(userId, contents);
         }
+        responseComplete = true;
+    }
+
+    public String getLatestReply(Long userId) {
+        List<RoleContent> latestRecord = getLatestChatRecord(userId);
+        if (latestRecord.size() > 0) {
+            return latestRecord.get(latestRecord.size() - 1).getContent();
+        }
+        return "";
     }
 
     public List<RoleContent> getLatestChatRecord(Long userId) {
@@ -43,5 +55,13 @@ public class LLMChatRecorder {
             return chatRecords;
         }
         return recorder.getOrDefault(userId, chatRecords);
+    }
+
+    public void setResponseComplete(boolean responseComplete) {
+        this.responseComplete = responseComplete;
+    }
+
+    public boolean isResponseComplete() {
+        return responseComplete;
     }
 }

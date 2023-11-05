@@ -20,6 +20,8 @@ import java.util.List;
 @Service
 public class LLMChatServiceImpl implements LLMChatService {
 
+    private static final int MAX_WAIT_TIME = 300;
+
     @Resource
     private SparkLLMService llmService;
 
@@ -32,42 +34,53 @@ public class LLMChatServiceImpl implements LLMChatService {
     private WebSocket webSocket;
 
     @Override
-    public void startConnection(Long userId) {
+    public Result<Boolean> startConnection(Long userId) {
+        if (!LLMChatRecorder.getInstance().isResponseComplete()) {
+            return new Result<Boolean>().success(false);
+        }
         try {
-            webSocket = bigModelNew.start("你好");
+            webSocket = llmService.startConnection();
         } catch (Exception e) {
             log.error(e.getMessage());
+            return new Result<Boolean>().success(false);
         }
-//        webSocket = llmService.startConnection();
-//        String request = SparkLLMUtil.getAuthRequest(llmConfig.getAppId(), "Hello~", new ArrayList<>());
-//        if (webSocket != null) {
-//            webSocket.send(request);
-//        }
+        return new Result<Boolean>().success(Boolean.TRUE);
     }
 
     @Override
     public Result<LLMResult> sendMessage(String message, Long userId) {
         if (webSocket == null || message == null || userId == null) {
-            return new Result<LLMResult>().success();
+            return new Result<LLMResult>().fail();
+        }
+        if (!LLMChatRecorder.getInstance().isResponseComplete()) {
+            return new Result<LLMResult>().fail();
         }
         int before = LLMChatRecorder.getInstance().getLatestChatRecord(0L).size();
         try {
-            webSocket = bigModelNew.start(message);
+            webSocket = llmService.sendMessage(message);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        while (LLMChatRecorder.getInstance().getLatestChatRecord(0L).size() == before) {
+        int counter = 0;
+        while (LLMChatRecorder.getInstance().getLatestChatRecord(0L).size() == before && counter < MAX_WAIT_TIME) {
+            counter++;
             try {
-                Thread.sleep(200);
+                Thread.sleep(100);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        webSocket.close(1000, "");
+        return new Result<LLMResult>().success(getLatestReply());
+    }
+
+    private LLMResult getLatestReply() {
         LLMResult result = new LLMResult();
-        String ans = LLMChatRecorder.getInstance().getLatestChatRecord(0L).get(before).getContent();
+        String ans = LLMChatRecorder.getInstance().getLatestReply(0L);
         List<String> ansList = new ArrayList<>();
         ansList.add(ans);
         result.setDisplayText(ansList);
-        return new Result<LLMResult>().success(result);
+        return result;
     }
+
 }

@@ -54,17 +54,14 @@ public class BigModelNew extends WebSocketListener {
         NewQuestion=message;
         // 构建鉴权url
         appid = llmConfig.getAppId();
-        String authUrl = getAuthUrl(hostUrl, llmConfig.getApiKey(), llmConfig.getApiSecret());
+        String authUrl = SparkLLMUtil.getAuthUrl(hostUrl, llmConfig.getApiKey(), llmConfig.getApiSecret());
         log.info("info: " + llmConfig.getApiKey() + "  " + llmConfig.getApiSecret());
         OkHttpClient client = new OkHttpClient.Builder().build();
         String url = authUrl.replace("http://", "ws://").replace("https://", "wss://");
         Request request = new Request.Builder().url(url).build();
-        for (int i = 0; i < 1; i++) {
-            totalAnswer="";
-            WebSocket webSocket = client.newWebSocket(request, new BigModelNew());
-            return webSocket;
-        }
-        return null;
+        totalAnswer="";
+        WebSocket webSocket = client.newWebSocket(request, new BigModelNew());
+        return webSocket;
     }
 
     public static boolean canAddHistory(){  // 由于历史记录最大上线1.2W左右，需要判断是能能加入历史

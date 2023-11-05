@@ -6,7 +6,7 @@ import okhttp3.WebSocket;
 
 public interface LLMChatService {
 
-    void startConnection(Long userId);
+    Result<Boolean> startConnection(Long userId);
 
     Result<LLMResult> sendMessage(String message, Long userId);
 
