@@ -3,6 +3,7 @@ package com.example.springdemo.service.third;
 import com.alibaba.fastjson.JSON;
 import com.example.springdemo.bean.response.LLMResponse;
 import com.example.springdemo.config.SparkLLMConfig;
+import com.example.springdemo.service.WebSocketService;
 import com.example.springdemo.utils.SparkLLMUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
@@ -67,6 +68,7 @@ public class SparkLLMService extends WebSocketListener {
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
+        WebSocketService.sendMessageToUser(123L, text);
         LLMResponse response = JSON.parseObject(text, LLMResponse.class);
         if (!SparkLLMUtil.llmResponseValid(response)) {
             log.error("发生错误，错误码为：" + response.header.code);

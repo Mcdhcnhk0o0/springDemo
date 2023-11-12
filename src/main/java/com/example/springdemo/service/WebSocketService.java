@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 @Slf4j
 @Component
-@ServerEndpoint("/websocket/bus/{userId}")
+@ServerEndpoint("/websocket/{userId}")
 public class WebSocketService {
 
     private Session session;
