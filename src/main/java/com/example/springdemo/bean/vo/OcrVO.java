@@ -1,14 +1,13 @@
-package com.example.springdemo.bean.result;
+package com.example.springdemo.bean.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.json.JSONArray;
 
 import java.util.List;
 import java.util.Map;
 
 @Data
-public class OcrResult {
+public class OcrVO {
 
     @JsonProperty("words_result")
     private List<Map<String, String>> wordsResult;

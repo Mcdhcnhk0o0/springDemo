@@ -1,9 +1,9 @@
 package com.example.springdemo.controller
 
 import com.example.springdemo.annotation.UserLoginToken
-import com.example.springdemo.bean.result.Result
-import com.example.springdemo.bean.result.ArticleResult
-import com.example.springdemo.dao.Article
+import com.example.springdemo.bean.vo.protocol.Result
+import com.example.springdemo.bean.vo.ArticleVO
+import com.example.springdemo.bean.dao.Article
 import com.example.springdemo.service.ArticleService
 import com.example.springdemo.utils.JWTUtil
 import org.springframework.web.bind.annotation.*
@@ -23,10 +23,10 @@ class ArticleController {
         @RequestParam(value = "articleTitle") articleTitle: String,
         @RequestParam(value = "articleContent") articleContent: String,
         @RequestHeader(value = "token") token: String
-    ): Result<ArticleResult> {
+    ): Result<ArticleVO> {
         val userId: Long = JWTUtil.getUserIdFromToken(token).toLong()
         val articleResult = articleService?.addArticle(articleTitle, articleContent, userId)
-        return Result<ArticleResult>().success(articleResult)
+        return Result<ArticleVO>().success(articleResult)
     }
 
     @UserLoginToken
@@ -54,9 +54,9 @@ class ArticleController {
         @RequestParam(value = "articleTitle") articleTitle: String,
         @RequestParam(value = "articleContent") articleContent: String,
         @RequestParam(value = "articleId") articleId: Long,
-    ): Result<ArticleResult> {
+    ): Result<ArticleVO> {
         val article = articleService?.updateArticle(articleTitle, articleContent, articleId)
-        return Result<ArticleResult>().success(article)
+        return Result<ArticleVO>().success(article)
     }
 
 }

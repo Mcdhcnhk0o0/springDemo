@@ -1,8 +1,8 @@
-package com.example.springdemo.bean.response;
+package com.example.springdemo.bean.dto;
 
 import java.util.List;
 
-public class LLMResponse {
+public class LLMDTO {
 
     public Header header;
     public Payload payload;

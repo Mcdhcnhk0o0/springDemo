@@ -1,14 +1,15 @@
 package com.example.springdemo.service;
 
-import com.example.springdemo.bean.result.LoginResult;
-import com.example.springdemo.bean.result.Result;
+import com.example.springdemo.bean.vo.LoginVO;
+import com.example.springdemo.bean.vo.SignVO;
+import com.example.springdemo.bean.vo.protocol.Result;
 
 
 public interface LoginService {
 
-    boolean signUp(String email, String userName, String password);
+    Result<SignVO> signUp(String email, String userName, String password);
 
-    Result<LoginResult> loginByEmail(String email, String password);
+    Result<LoginVO> loginByEmail(String email, String password);
 
-    Result<LoginResult> logout(Long userId, String email);
+    Result<LoginVO> logout(Long userId, String email);
 }

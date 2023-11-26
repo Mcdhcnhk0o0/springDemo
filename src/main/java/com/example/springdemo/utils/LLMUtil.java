@@ -3,7 +3,7 @@ package com.example.springdemo.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.springdemo.bean.response.LLMResponse;
+import com.example.springdemo.bean.dto.LLMDTO;
 import okhttp3.HttpUrl;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class SparkLLMUtil {
+public class LLMUtil {
 
     // 鉴权方法
     public static String getAuthUrl(String hostUrl, String apiKey, String apiSecret) throws Exception {
@@ -45,13 +45,13 @@ public class SparkLLMUtil {
         return httpUrl.toString();
     }
 
-    public static boolean llmResponseValid(LLMResponse response) {
+    public static boolean llmResponseValid(LLMDTO response) {
         return response.header.code == 0;
     }
 
-    public static boolean canAddHistory(List<LLMResponse.RoleContent> historyList) {
+    public static boolean canAddHistory(List<LLMDTO.RoleContent> historyList) {
         int historyLength = 0;
-        for(LLMResponse.RoleContent temp:historyList){
+        for(LLMDTO.RoleContent temp:historyList){
             historyLength = historyLength + temp.getContent().length();
         }
         // 由于历史记录最大上线1.2W左右，需要判断是能能加入历史
@@ -66,7 +66,7 @@ public class SparkLLMUtil {
         return true;
     }
 
-    public static String getAuthRequest(String appid, String completeAnswer, List<LLMResponse.RoleContent> historyList) {
+    public static String getAuthRequest(String appid, String completeAnswer, List<LLMDTO.RoleContent> historyList) {
         JSONObject requestJson=new JSONObject();
         // header参数
         JSONObject header = new JSONObject();
@@ -85,12 +85,12 @@ public class SparkLLMUtil {
         JSONArray text = new JSONArray();
         // 历史问题获取
         if (historyList.size() > 0){
-            for (LLMResponse.RoleContent tempRoleContent: historyList) {
+            for (LLMDTO.RoleContent tempRoleContent: historyList) {
                 text.add(JSON.toJSON(tempRoleContent));
             }
         }
         // 最新问题添加
-        LLMResponse.RoleContent roleContent = new LLMResponse.RoleContent();
+        LLMDTO.RoleContent roleContent = new LLMDTO.RoleContent();
         roleContent.setRole("user");
         roleContent.setContent(completeAnswer);
         text.add(JSON.toJSON(roleContent));

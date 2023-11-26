@@ -1,11 +1,9 @@
 package com.example.springdemo.service.third;
 
-import com.example.springdemo.bean.response.LLMResponse.*;
+import com.example.springdemo.bean.dto.LLMDTO.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LLMChatRecorder {

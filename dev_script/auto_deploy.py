@@ -41,6 +41,7 @@ class AutoDeployMonitor:
             os.system("pkill java")
             self.print("java process exist, kill it")
         os.system(start_command)
+        time.sleep(5)
         retry_count = 0
         while not self._java_process_exist() and retry_count < 10:
             retry_count += 1
@@ -60,7 +61,7 @@ class AutoDeployMonitor:
         os.system('ps -ef|grep "springdemo" > java_status.out')
         with open(r"java_status.out") as f:
             for line in f:
-                if f"{self.jar_name}_{self.latest_timestamp}" in line:
+                if f"{self.jar_name}" in line:
                     return True
             return False
 

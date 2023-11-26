@@ -1,12 +1,12 @@
 package com.example.springdemo.controller;
 
 import com.example.springdemo.annotation.UserLoginToken;
-import com.example.springdemo.bean.result.Result;
-import com.example.springdemo.dao.User;
-import com.example.springdemo.dao.UserDetail;
+import com.example.springdemo.bean.vo.protocol.Result;
+import com.example.springdemo.bean.dao.User;
+import com.example.springdemo.bean.dao.UserDetail;
 import com.example.springdemo.service.UserDetailService;
 import com.example.springdemo.service.UserService;
-import com.example.springdemo.vo.UserVO;
+import com.example.springdemo.bean.vo.UserVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

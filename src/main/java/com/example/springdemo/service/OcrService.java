@@ -1,10 +1,10 @@
 package com.example.springdemo.service;
 
-import com.example.springdemo.bean.result.OcrResult;
-import com.example.springdemo.bean.result.Result;
+import com.example.springdemo.bean.vo.OcrVO;
+import com.example.springdemo.bean.vo.protocol.Result;
 
 public interface OcrService {
 
-    Result<OcrResult> getOcrResultWhenPicInUrl(String url);
+    Result<OcrVO> getOcrResultWhenPicInUrl(String url);
 
 }

@@ -1,13 +1,13 @@
 package com.example.springdemo.factory;
 
-import com.example.springdemo.bean.result.LoginResult;
-import com.example.springdemo.bean.result.Result;
-import com.example.springdemo.dao.User;
-import com.example.springdemo.utils.ResponseInfo;
+import com.example.springdemo.bean.vo.LoginVO;
+import com.example.springdemo.bean.vo.protocol.Result;
+import com.example.springdemo.bean.dao.User;
+import com.example.springdemo.bean.vo.protocol.ResponseInfo;
 
 public class LoginResultBuilder {
 
-    private final LoginResult loginResult = new LoginResult();
+    private final LoginVO loginResult = new LoginVO();
 
     public LoginResultBuilder setUser(User user) {
         this.loginResult.setUser(user);
@@ -34,18 +34,18 @@ public class LoginResultBuilder {
         return this;
     }
 
-    public Result<LoginResult> fail() {
+    public Result<LoginVO> fail() {
         loginResult.setSuccess(false);
-        Result<LoginResult> result = new Result<>();
+        Result<LoginVO> result = new Result<>();
         result.setCode(ResponseInfo.SUCCESS.getCode());
         result.setMessage(ResponseInfo.SUCCESS.getMessage());
         result.setData(loginResult);
         return result;
     }
 
-    public Result<LoginResult> success() {
+    public Result<LoginVO> success() {
         loginResult.setSuccess(true);
-        Result<LoginResult> result = new Result<>();
+        Result<LoginVO> result = new Result<>();
         result.setCode(ResponseInfo.SUCCESS.getCode());
         result.setMessage(ResponseInfo.SUCCESS.getMessage());
         result.setData(loginResult);

@@ -1,7 +1,7 @@
 package com.example.springdemo.service.impl;
 
-import com.example.springdemo.bean.result.OcrResult;
-import com.example.springdemo.bean.result.Result;
+import com.example.springdemo.bean.vo.OcrVO;
+import com.example.springdemo.bean.vo.protocol.Result;
 import com.example.springdemo.service.OcrService;
 import com.example.springdemo.service.third.BaiduOcrService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,13 +18,13 @@ public class OcrServiceImpl implements OcrService {
     private BaiduOcrService baiduOcrService;
 
     @Override
-    public Result<OcrResult> getOcrResultWhenPicInUrl(String url) {
+    public Result<OcrVO> getOcrResultWhenPicInUrl(String url) {
         JSONObject resultJson = baiduOcrService.getOcrResultWhenPicInUrl(url);
-        Result<OcrResult> result = new Result<>();
-        OcrResult ocrResult = null;
+        Result<OcrVO> result = new Result<>();
+        OcrVO ocrResult = null;
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            ocrResult = objectMapper.readValue(resultJson.toString(2), OcrResult.class);
+            ocrResult = objectMapper.readValue(resultJson.toString(2), OcrVO.class);
         } catch (Exception e) {
             e.printStackTrace();
         }

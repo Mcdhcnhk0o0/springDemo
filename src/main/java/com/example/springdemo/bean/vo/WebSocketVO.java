@@ -1,4 +1,4 @@
-package com.example.springdemo.vo;
+package com.example.springdemo.bean.vo;
 
 import lombok.Data;
 

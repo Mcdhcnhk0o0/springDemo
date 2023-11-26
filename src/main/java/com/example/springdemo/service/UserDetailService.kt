@@ -1,6 +1,6 @@
 package com.example.springdemo.service
 
-import com.example.springdemo.dao.UserDetail
+import com.example.springdemo.bean.dao.UserDetail
 
 interface UserDetailService {
 

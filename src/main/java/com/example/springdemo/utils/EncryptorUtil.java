@@ -3,7 +3,7 @@ package com.example.springdemo.utils;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 
-public class JasyptEncryptorUtil {
+public class EncryptorUtil {
 
     private static final StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
 

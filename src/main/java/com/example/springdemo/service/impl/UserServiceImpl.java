@@ -2,9 +2,10 @@ package com.example.springdemo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.example.springdemo.dao.User;
+import com.example.springdemo.bean.dao.User;
 import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.service.UserService;
+import com.example.springdemo.utils.CollectionUtil;
 import com.example.springdemo.utils.UserIdUtil;
 import org.springframework.stereotype.Service;
 
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id", id);
         List<User> userList = userMapper.selectList(wrapper);
-        return userList == null ? null : userList.get(0);
+        return CollectionUtil.getNullableFirst(userList);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("email", email);
         List<User> userList = userMapper.selectList(wrapper);
-        return userList == null ? null : userList.get(0);
+        return CollectionUtil.getNullableFirst(userList);
     }
 
 }

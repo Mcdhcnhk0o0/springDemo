@@ -1,4 +1,4 @@
-package com.example.springdemo.utils
+package com.example.springdemo.bean.vo.protocol
 
 enum class ResponseInfo(val code: Int, val message: String) {
     DEFAULT(0, "未知状态"),

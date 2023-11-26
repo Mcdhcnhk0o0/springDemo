@@ -1,10 +1,10 @@
 package com.example.springdemo;
 
 import com.example.springdemo.config.BaiduOcrConfig;
-import com.example.springdemo.dao.User;
+import com.example.springdemo.bean.dao.User;
 import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.utils.JWTUtil;
-import com.example.springdemo.utils.JasyptEncryptorUtil;
+import com.example.springdemo.utils.EncryptorUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -49,7 +49,7 @@ class SpringDemoApplicationTests {
         dataList.add("pwd");
         String pwd = "hello world";
         for (String data: dataList) {
-            String afterEncryptor = JasyptEncryptorUtil.encrypt(data, pwd);
+            String afterEncryptor = EncryptorUtil.encrypt(data, pwd);
             System.out.println(afterEncryptor);
         }
     }

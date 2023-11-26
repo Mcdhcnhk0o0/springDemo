@@ -1,11 +1,10 @@
-package com.example.springdemo.bean.result;
+package com.example.springdemo.bean.vo;
 
-import com.example.springdemo.dao.User;
-import com.fasterxml.jackson.annotation.JsonAlias;
+import com.example.springdemo.bean.dao.User;
 import lombok.Data;
 
 @Data
-public class LoginResult {
+public class LoginVO {
 
     Boolean success;
     Integer statusCode;

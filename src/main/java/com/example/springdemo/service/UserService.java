@@ -1,6 +1,6 @@
 package com.example.springdemo.service;
 
-import com.example.springdemo.dao.User;
+import com.example.springdemo.bean.dao.User;
 
 import java.util.List;
 

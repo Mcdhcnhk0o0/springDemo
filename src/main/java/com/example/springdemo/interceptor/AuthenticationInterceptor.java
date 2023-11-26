@@ -3,7 +3,7 @@ package com.example.springdemo.interceptor;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springdemo.annotation.PassToken;
 import com.example.springdemo.annotation.UserLoginToken;
-import com.example.springdemo.dao.User;
+import com.example.springdemo.bean.dao.User;
 import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.utils.JWTUtil;
 import org.jetbrains.annotations.NotNull;

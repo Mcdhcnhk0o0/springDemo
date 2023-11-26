@@ -2,8 +2,9 @@ package com.example.springdemo.controller;
 
 import com.example.springdemo.annotation.PassToken;
 import com.example.springdemo.annotation.UserLoginToken;
-import com.example.springdemo.bean.result.LoginResult;
-import com.example.springdemo.bean.result.Result;
+import com.example.springdemo.bean.vo.LoginVO;
+import com.example.springdemo.bean.vo.SignVO;
+import com.example.springdemo.bean.vo.protocol.Result;
 import com.example.springdemo.service.LoginService;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class LoginController {
 
     @PassToken
     @GetMapping("/signup")
-    public boolean signUp(
+    public Result<SignVO> signUp(
             @RequestParam(value = "email") String email,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "password") String password) {
@@ -30,7 +31,7 @@ public class LoginController {
 
     @PassToken
     @GetMapping("loginByEmail")
-    public Result<LoginResult> loginByEmail(
+    public Result<LoginVO> loginByEmail(
             @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password) {
 
@@ -40,7 +41,7 @@ public class LoginController {
 
     @UserLoginToken
     @GetMapping("logout")
-    public Result<LoginResult> logout(
+    public Result<LoginVO> logout(
             @RequestParam(value = "userId") Long userId,
             @RequestParam(value = "email", required = false) String email) {
 

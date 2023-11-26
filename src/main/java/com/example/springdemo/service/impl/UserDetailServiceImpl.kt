@@ -2,7 +2,7 @@ package com.example.springdemo.service.impl
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper
-import com.example.springdemo.dao.UserDetail
+import com.example.springdemo.bean.dao.UserDetail
 import com.example.springdemo.mapper.UserDetailMapper
 import com.example.springdemo.service.UserDetailService
 import org.springframework.stereotype.Service

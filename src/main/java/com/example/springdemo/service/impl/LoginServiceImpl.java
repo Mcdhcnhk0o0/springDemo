@@ -1,14 +1,15 @@
 package com.example.springdemo.service.impl;
 
-import com.example.springdemo.bean.result.LoginResult;
-import com.example.springdemo.bean.result.Result;
-import com.example.springdemo.dao.User;
+import com.example.springdemo.bean.vo.LoginVO;
+import com.example.springdemo.bean.vo.SignVO;
+import com.example.springdemo.bean.vo.protocol.Result;
+import com.example.springdemo.bean.dao.User;
 import com.example.springdemo.factory.LoginResultBuilder;
 import com.example.springdemo.service.LoginService;
 import com.example.springdemo.service.UserDetailService;
 import com.example.springdemo.service.UserService;
 import com.example.springdemo.utils.JWTUtil;
-import com.example.springdemo.utils.LoginResultInfo;
+import com.example.springdemo.bean.vo.protocol.LoginResultInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,17 +35,19 @@ public class LoginServiceImpl implements LoginService {
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public boolean signUp(String email, String userName, String password) {
+    public Result<SignVO> signUp(String email, String userName, String password) {
         User user = userService.addUser(email, userName, password);
         if (user != null && user.getUserId() != null) {
             userDetailService.addUserDetail(user.getUserId(), null, null, null, null, null);
-            return true;
+            SignVO signVO = new SignVO();
+            signVO.setUser(privacyFilter(user));
+            return new Result<SignVO>().success(signVO);
         }
-        return false;
+        return new Result<SignVO>().fail();
     }
 
     @Override
-    public Result<LoginResult> loginByEmail(String email, String password) {
+    public Result<LoginVO> loginByEmail(String email, String password) {
         User currentUser = userService.getUserByEmail(email);
         if (currentUser == null || currentUser.getUserId() == null) {
             return new LoginResultBuilder()
@@ -76,7 +79,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Result<LoginResult> logout(Long userId, String email) {
+    public Result<LoginVO> logout(Long userId, String email) {
         User currentUser = userService.getUserById(userId);
         if (currentUser == null || currentUser.getUserId() == null) {
             return new LoginResultBuilder()

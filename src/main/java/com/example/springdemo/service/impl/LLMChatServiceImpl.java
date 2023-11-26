@@ -1,13 +1,11 @@
 package com.example.springdemo.service.impl;
 
-import com.example.springdemo.bean.result.LLMResult;
-import com.example.springdemo.bean.result.Result;
+import com.example.springdemo.bean.vo.LLMVO;
+import com.example.springdemo.bean.vo.protocol.Result;
 import com.example.springdemo.config.SparkLLMConfig;
 import com.example.springdemo.service.LLMChatService;
 import com.example.springdemo.service.third.LLMChatRecorder;
 import com.example.springdemo.service.third.SparkLLMService;
-import com.example.springdemo.utils.BigModelNew;
-import com.example.springdemo.utils.SparkLLMUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.WebSocket;
 import org.springframework.stereotype.Service;
@@ -24,9 +22,6 @@ public class LLMChatServiceImpl implements LLMChatService {
 
     @Resource
     private SparkLLMService llmService;
-
-    @Resource
-    private BigModelNew bigModelNew;
 
     @Resource
     private SparkLLMConfig llmConfig;
@@ -48,12 +43,12 @@ public class LLMChatServiceImpl implements LLMChatService {
     }
 
     @Override
-    public Result<LLMResult> sendMessage(String message, Long userId) {
+    public Result<LLMVO> sendMessage(String message, Long userId) {
         if (webSocket == null || message == null || userId == null) {
-            return new Result<LLMResult>().fail();
+            return new Result<LLMVO>().fail();
         }
         if (!LLMChatRecorder.getInstance().isResponseComplete()) {
-            return new Result<LLMResult>().fail();
+            return new Result<LLMVO>().fail();
         }
         int before = LLMChatRecorder.getInstance().getLatestChatRecord(0L).size();
         try {
@@ -71,11 +66,11 @@ public class LLMChatServiceImpl implements LLMChatService {
             }
         }
         webSocket.close(1000, "");
-        return new Result<LLMResult>().success(getLatestReply());
+        return new Result<LLMVO>().success(getLatestReply());
     }
 
-    private LLMResult getLatestReply() {
-        LLMResult result = new LLMResult();
+    private LLMVO getLatestReply() {
+        LLMVO result = new LLMVO();
         String ans = LLMChatRecorder.getInstance().getLatestReply(0L);
         List<String> ansList = new ArrayList<>();
         ansList.add(ans);

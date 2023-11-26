@@ -1,12 +1,12 @@
-package com.example.springdemo.bean.result;
+package com.example.springdemo.bean.vo;
 
-import com.example.springdemo.dao.User;
+import com.example.springdemo.bean.dao.User;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class LLMResult {
+public class LLMVO {
 
     User user;
     String token;

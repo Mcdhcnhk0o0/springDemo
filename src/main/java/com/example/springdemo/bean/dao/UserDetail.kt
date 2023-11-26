@@ -1,4 +1,4 @@
-package com.example.springdemo.dao
+package com.example.springdemo.bean.dao
 
 import com.baomidou.mybatisplus.annotation.IdType
 import com.baomidou.mybatisplus.annotation.TableId

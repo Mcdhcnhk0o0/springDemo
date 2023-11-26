@@ -1,10 +1,10 @@
 package com.example.springdemo.service.third;
 
 import com.alibaba.fastjson.JSON;
-import com.example.springdemo.bean.response.LLMResponse;
+import com.example.springdemo.bean.dto.LLMDTO;
 import com.example.springdemo.config.SparkLLMConfig;
 import com.example.springdemo.service.WebSocketService;
-import com.example.springdemo.utils.SparkLLMUtil;
+import com.example.springdemo.utils.LLMUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public class SparkLLMService extends WebSocketListener {
 
     public static StringBuilder completeAnswer = new StringBuilder();
 
-    public static List<LLMResponse.RoleContent> historyList = new ArrayList<>();
+    public static List<LLMDTO.RoleContent> historyList = new ArrayList<>();
 
     public WebSocket startConnection() {
         query = "你好，以后每个回答请以颜文字结尾(*´▽｀)ノノ";
@@ -47,7 +47,7 @@ public class SparkLLMService extends WebSocketListener {
     private WebSocket getCurrentWebsocket() {
         WebSocket webSocket = null;
         try {
-            String authUrl = SparkLLMUtil.getAuthUrl(hostUrl, llmConfig.getApiKey(), llmConfig.getApiSecret());
+            String authUrl = LLMUtil.getAuthUrl(hostUrl, llmConfig.getApiKey(), llmConfig.getApiSecret());
             log.debug("apiKey" + llmConfig.getApiKey() + ", secret: " + llmConfig.getApiSecret());
             OkHttpClient client = new OkHttpClient.Builder().build();
             String url = authUrl.replace("http://", "ws://").replace("https://", "wss://");
@@ -69,14 +69,14 @@ public class SparkLLMService extends WebSocketListener {
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
         WebSocketService.sendMessageToUser(123L, text);
-        LLMResponse response = JSON.parseObject(text, LLMResponse.class);
-        if (!SparkLLMUtil.llmResponseValid(response)) {
+        LLMDTO response = JSON.parseObject(text, LLMDTO.class);
+        if (!LLMUtil.llmResponseValid(response)) {
             log.error("发生错误，错误码为：" + response.header.code);
             log.error("本次请求的sid为：" + response.header.sid);
             webSocket.close(WS_CLOSE_CODE, "connection closed due to errors in server");
         }
-        List<LLMResponse.Text> textList = response.payload.choices.text;
-        for (LLMResponse.Text temp : textList) {
+        List<LLMDTO.Text> textList = response.payload.choices.text;
+        for (LLMDTO.Text temp : textList) {
             System.out.print(temp.content);
             completeAnswer.append(temp.content);
         }
@@ -85,14 +85,14 @@ public class SparkLLMService extends WebSocketListener {
             // 可以关闭连接，释放资源
             String answer = completeAnswer.toString();
             System.out.println("-> complete: " + completeAnswer);
-            if (SparkLLMUtil.canAddHistory(historyList)) {
-                LLMResponse.RoleContent roleContent = new LLMResponse.RoleContent();
+            if (LLMUtil.canAddHistory(historyList)) {
+                LLMDTO.RoleContent roleContent = new LLMDTO.RoleContent();
                 roleContent.setRole("assistant");
                 roleContent.setContent(answer);
                 historyList.add(roleContent);
             } else {
                 historyList.remove(0);
-                LLMResponse.RoleContent roleContent=new LLMResponse.RoleContent();
+                LLMDTO.RoleContent roleContent=new LLMDTO.RoleContent();
                 roleContent.setRole("assistant");
                 roleContent.setContent(answer);
                 historyList.add(roleContent);
@@ -153,7 +153,7 @@ public class SparkLLMService extends WebSocketListener {
     }
 
     public String getChatRequest(String query) {
-        return SparkLLMUtil.getAuthRequest(llmConfig.getAppId(), query, historyList);
+        return LLMUtil.getAuthRequest(llmConfig.getAppId(), query, historyList);
     }
 
 }

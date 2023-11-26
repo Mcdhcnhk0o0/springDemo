@@ -2,9 +2,7 @@ package com.example.springdemo.utils
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.auth0.jwt.exceptions.JWTVerificationException
-import com.example.springdemo.dao.User
-import java.lang.RuntimeException
+import com.example.springdemo.bean.dao.User
 
 class JWTUtil {
 

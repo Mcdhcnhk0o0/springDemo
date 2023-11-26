@@ -1,6 +1,5 @@
-package com.example.springdemo.bean.result;
+package com.example.springdemo.bean.vo.protocol;
 
-import com.example.springdemo.utils.ResponseInfo;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
