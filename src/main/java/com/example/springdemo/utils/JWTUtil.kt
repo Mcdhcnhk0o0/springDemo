@@ -21,8 +21,8 @@ class JWTUtil {
         }
 
         fun verifyUserByToken(user: User, token: String) {
-                val jwtVerifier = JWT.require(jwtAlgorithm(user.password!!)).build()
-                jwtVerifier.verify(token)
+            val jwtVerifier = JWT.require(jwtAlgorithm(user.password!!)).build()
+            jwtVerifier.verify(token)
         }
 
     }

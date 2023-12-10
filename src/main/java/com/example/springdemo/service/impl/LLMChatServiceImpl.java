@@ -2,10 +2,11 @@ package com.example.springdemo.service.impl;
 
 import com.example.springdemo.bean.vo.LLMVO;
 import com.example.springdemo.bean.vo.protocol.Result;
-import com.example.springdemo.config.SparkLLMConfig;
+import com.example.springdemo.service.ChatRecordService;
 import com.example.springdemo.service.LLMChatService;
 import com.example.springdemo.service.third.LLMChatRecorder;
 import com.example.springdemo.service.third.SparkLLMService;
+import com.example.springdemo.utils.LLMUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.WebSocket;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class LLMChatServiceImpl implements LLMChatService {
     private SparkLLMService llmService;
 
     @Resource
-    private SparkLLMConfig llmConfig;
+    private ChatRecordService chatRecordService;
 
     private WebSocket webSocket;
 
@@ -34,7 +35,7 @@ public class LLMChatServiceImpl implements LLMChatService {
             return new Result<Boolean>().success(false);
         }
         try {
-            webSocket = llmService.startConnection();
+            webSocket = llmService.startConnection(userId);
         } catch (Exception e) {
             log.error(e.getMessage());
             return new Result<Boolean>().success(false);
@@ -50,14 +51,15 @@ public class LLMChatServiceImpl implements LLMChatService {
         if (!LLMChatRecorder.getInstance().isResponseComplete()) {
             return new Result<LLMVO>().fail();
         }
-        int before = LLMChatRecorder.getInstance().getLatestChatRecord(0L).size();
+        chatRecordService.addChatRecord(userId, LLMUtil.fixedId, message);
+        int before = LLMChatRecorder.getInstance().getLatestChatRecord(userId).size();
         try {
-            webSocket = llmService.sendMessage(message);
+            webSocket = llmService.sendNewMessage(message, userId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         int counter = 0;
-        while (LLMChatRecorder.getInstance().getLatestChatRecord(0L).size() == before && counter < MAX_WAIT_TIME) {
+        while (LLMChatRecorder.getInstance().getLatestChatRecord(userId).size() == before && counter < MAX_WAIT_TIME) {
             counter++;
             try {
                 Thread.sleep(100);
@@ -66,12 +68,14 @@ public class LLMChatServiceImpl implements LLMChatService {
             }
         }
         webSocket.close(1000, "");
-        return new Result<LLMVO>().success(getLatestReply());
+        LLMVO latestReply = getLatestReply(userId);
+        chatRecordService.addChatRecord(LLMUtil.fixedId, userId, latestReply.getDisplayText().get(0));
+        return new Result<LLMVO>().success(latestReply);
     }
 
-    private LLMVO getLatestReply() {
+    private LLMVO getLatestReply(Long userId) {
         LLMVO result = new LLMVO();
-        String ans = LLMChatRecorder.getInstance().getLatestReply(0L);
+        String ans = LLMChatRecorder.getInstance().getLatestReply(userId);
         List<String> ansList = new ArrayList<>();
         ansList.add(ans);
         result.setDisplayText(ansList);

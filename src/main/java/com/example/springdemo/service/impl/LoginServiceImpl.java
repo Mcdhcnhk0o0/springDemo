@@ -1,5 +1,6 @@
 package com.example.springdemo.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.example.springdemo.bean.vo.LoginVO;
 import com.example.springdemo.bean.vo.SignVO;
 import com.example.springdemo.bean.vo.protocol.Result;
@@ -68,13 +69,12 @@ public class LoginServiceImpl implements LoginService {
             loginResultInfo = LoginResultInfo.LOGIN_SUCCESS;
             log.debug("new login user: {}", currentUser.getUserId().toString());
         }
-        setLatestLoginTimeToRedis(userIdStr);
+        setLatestLoginTimeToRedis(userIdStr, currentUser);
         return new LoginResultBuilder()
                 .setToken(generateToken(currentUser))
                 .setUser(privacyFilter(currentUser))
                 .setStatusCode(loginResultInfo.getCode())
                 .setStatusMessage(loginResultInfo.getMessage())
-                .setLatestLoginTime((String) latestLoginInfo)
                 .success();
     }
 
@@ -101,20 +101,27 @@ public class LoginServiceImpl implements LoginService {
                 .setToken(generateToken(currentUser))
                 .setStatusCode(LoginResultInfo.LOGOUT_SUCCESS.getCode())
                 .setStatusMessage(LoginResultInfo.LOGOUT_SUCCESS.getMessage())
-                .setLatestLoginTime((String) latestLoginInfo)
                 .success();
     }
 
-    private Object getLatestLoginInfoFromRedis(String key) {
-        return redisTemplate.opsForValue().get(key);
+    private User getLatestLoginInfoFromRedis(String key) {
+        String userStr = (String) redisTemplate.opsForValue().get(key);
+        User currentUser = null;
+        try {
+            currentUser = JSON.parseObject(userStr, User.class);
+        } catch (Exception e) {
+            // redis中存储内容不一定为user，反序列化出错时忽略即可，登录校验通过后会刷新
+            e.printStackTrace();
+        }
+        return currentUser;
     }
 
     private void removeLatestLoginTimeInRedis(String key) {
         redisTemplate.delete(key);
     }
 
-    private void setLatestLoginTimeToRedis(String key) {
-        redisTemplate.opsForValue().set(key, String.valueOf(System.currentTimeMillis()));
+    private void setLatestLoginTimeToRedis(String key, User user) {
+        redisTemplate.opsForValue().set(key, JSON.toJSONString(user));
         redisTemplate.expire(key, 7, TimeUnit.DAYS);
     }
 

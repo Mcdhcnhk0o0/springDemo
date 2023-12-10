@@ -33,7 +33,8 @@ public class LoginController {
     @GetMapping("loginByEmail")
     public Result<LoginVO> loginByEmail(
             @RequestParam(value = "email") String email,
-            @RequestParam(value = "password") String password) {
+            @RequestParam(value = "password") String password
+    ) {
 
         return loginService.loginByEmail(email, password);
 
@@ -43,7 +44,8 @@ public class LoginController {
     @GetMapping("logout")
     public Result<LoginVO> logout(
             @RequestParam(value = "userId") Long userId,
-            @RequestParam(value = "email", required = false) String email) {
+            @RequestParam(value = "email", required = false) String email
+    ) {
 
         return loginService.logout(userId, email);
 

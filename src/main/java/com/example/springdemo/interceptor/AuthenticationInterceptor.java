@@ -1,5 +1,7 @@
 package com.example.springdemo.interceptor;
 
+import com.alibaba.fastjson.JSON;
+import com.aliyuncs.utils.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springdemo.annotation.PassToken;
 import com.example.springdemo.annotation.UserLoginToken;
@@ -7,6 +9,8 @@ import com.example.springdemo.bean.dao.User;
 import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.utils.JWTUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -19,7 +23,8 @@ import java.util.List;
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Resource
-    private UserMapper userMapper;
+    @Qualifier("redisTemplate")
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
@@ -50,15 +55,21 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             } catch (Exception e) {
                 throw new RuntimeException("token校验失败, " + e.getMessage());
             }
-            QueryWrapper<User> wrapper = new QueryWrapper<>();
-            wrapper.eq("user_id", userId);
-            List<User> userList = userMapper.selectList(wrapper);
-            if (userList == null || userList.size() <= 0) {
-                throw new RuntimeException("用户不存在，请重新登录");
+            if (userId.isEmpty()) {
+                throw new RuntimeException("token校验失败, 请重新登录");
             }
-            User targetUser = userList.get(0);
+            Object redisStatus = redisTemplate.opsForValue().get(userId);
+            if (redisStatus == null) {
+                throw new RuntimeException("用户登录已失效，请重新登录");
+            }
+            User currentUser = null;
             try {
-                JWTUtil.Instance.verifyUserByToken(targetUser, token);
+                currentUser = JSON.parseObject((String) redisStatus, User.class);
+            } catch (Exception e) {
+                throw new RuntimeException("用户验证失败，请重新登录");
+            }
+            try {
+                JWTUtil.Instance.verifyUserByToken(currentUser, token);
             } catch (Exception e) {
                 throw new RuntimeException("token验证失败, " + e.getMessage());
             }

@@ -4,6 +4,7 @@ import com.example.springdemo.annotation.UserLoginToken;
 import com.example.springdemo.bean.vo.LLMVO;
 import com.example.springdemo.bean.vo.protocol.Result;
 import com.example.springdemo.service.LLMChatService;
+import com.example.springdemo.utils.JWTUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,16 +19,26 @@ public class LLMController {
 
     @UserLoginToken
     @GetMapping("/start")
-    public Result<Boolean> startConnection() {
-        return llmChatService.startConnection(0L);
+    public Result<Boolean> startConnection(
+            @RequestHeader(value = "token") String token
+    ) {
+        Long userId = getUserIdFromToken(token);
+        return llmChatService.startConnection(userId);
     }
 
     @UserLoginToken
     @GetMapping("/send")
     public Result<LLMVO> sendMessage(
+        @RequestHeader(value = "token") String token,
         @RequestParam(value = "message") String message
     ) {
-        return llmChatService.sendMessage(message, 0L);
+        Long userId = getUserIdFromToken(token);
+        return llmChatService.sendMessage(message, userId);
+    }
+
+    private Long getUserIdFromToken(String token) {
+        String userIdStr = JWTUtil.Instance.getUserIdFromToken(token);
+        return Long.parseLong(userIdStr);
     }
 
 }

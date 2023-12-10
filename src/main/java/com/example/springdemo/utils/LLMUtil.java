@@ -15,6 +15,8 @@ import java.util.*;
 
 public class LLMUtil {
 
+    public static final long fixedId = 10000L;
+
     // 鉴权方法
     public static String getAuthUrl(String hostUrl, String apiKey, String apiSecret) throws Exception {
         URL url = new URL(hostUrl);

@@ -12,13 +12,11 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 @Slf4j
 @Service
+// todo: 内部实现均为非线程安全，待后续改造
 public class SparkLLMService extends WebSocketListener {
 
     private static final int WS_CLOSE_CODE = 1000;
@@ -28,23 +26,35 @@ public class SparkLLMService extends WebSocketListener {
     @Resource
     private SparkLLMConfig llmConfig;
 
+    private Long userId;
+
     private String query;
+
+    private WebSocket cachedWebSocket;
 
     public static StringBuilder completeAnswer = new StringBuilder();
 
     public static List<LLMDTO.RoleContent> historyList = new ArrayList<>();
 
-    public WebSocket startConnection() {
-        query = "你好，以后每个回答请以颜文字结尾(*´▽｀)ノノ";
-        return getCurrentWebsocket();
+    public WebSocket startConnection(Long userId) {
+        this.userId = userId;
+        this.query = "你好，以后每个回答请以颜文字结尾(*´▽｀)ノノ";
+        this.cachedWebSocket = getNewWebsocket();
+        return cachedWebSocket;
     }
 
     public WebSocket sendMessage(String message) {
-        query = message;
-        return getCurrentWebsocket();
+        cachedWebSocket.send(message);
+        return cachedWebSocket;
     }
 
-    private WebSocket getCurrentWebsocket() {
+    public WebSocket sendNewMessage(String message, Long userId) {
+        this.query = message;
+        this.userId = userId;
+        return getNewWebsocket();
+    }
+
+    private WebSocket getNewWebsocket() {
         WebSocket webSocket = null;
         try {
             String authUrl = LLMUtil.getAuthUrl(hostUrl, llmConfig.getApiKey(), llmConfig.getApiSecret());
@@ -99,7 +109,7 @@ public class SparkLLMService extends WebSocketListener {
             }
             completeAnswer = new StringBuilder();
             LLMChatRecorder.getInstance().setResponseComplete(true);
-            LLMChatRecorder.getInstance().record(0L, historyList.get(historyList.size() - 1));
+            LLMChatRecorder.getInstance().record(userId, historyList.get(historyList.size() - 1));
         }
     }
 

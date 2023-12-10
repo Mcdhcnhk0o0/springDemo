@@ -47,9 +47,10 @@ class SpringDemoApplicationTests {
         List<String> dataList = new ArrayList<>();
         dataList.add("test");
         dataList.add("pwd");
-        String pwd = "hello world";
+        String pwd = "wqqduan";
         for (String data: dataList) {
             String afterEncryptor = EncryptorUtil.encrypt(data, pwd);
+            System.out.println(EncryptorUtil.decrypt("FjP9PE9/vnJmN8xi+aKN5k2A0PSXLb/4", pwd));
             System.out.println(afterEncryptor);
         }
     }
