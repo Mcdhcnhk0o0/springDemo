@@ -37,7 +37,7 @@ public class LLMController {
     }
 
     private Long getUserIdFromToken(String token) {
-        String userIdStr = JWTUtil.Instance.getUserIdFromToken(token);
+        String userIdStr = JWTUtil.Instance.getUserIdStrFromToken(token);
         return Long.parseLong(userIdStr);
     }
 

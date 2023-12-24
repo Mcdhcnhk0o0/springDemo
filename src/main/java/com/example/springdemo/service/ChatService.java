@@ -5,7 +5,9 @@ import com.example.springdemo.bean.vo.protocol.Result;
 
 import java.util.List;
 
-public interface ChatRecordService {
+public interface ChatService {
+
+    Result<Boolean> sendTo(Long sourceUserId, Long targetUserId, String message);
 
     Result<Boolean> addChatRecord(Long from, Long to, String message);
 

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Result<T> {
 
-    private Integer code = ResponseInfo.DEFAULT.getCode();
+    private Integer code = null;
 
-    private String message = ResponseInfo.DEFAULT.getMessage();
+    private String message = null;
 
     private T data;
 
@@ -46,6 +46,16 @@ public class Result<T> {
         return this;
     }
 
+    public Result<T> code(Integer code) {
+        this.code = code;
+        return this;
+    }
+
+    public Result<T> message(String message) {
+        this.message = message;
+        return this;
+    }
+
     public Result<T> success(T data) {
         this.data = data;
         this.code = ResponseInfo.SUCCESS.getCode();
@@ -54,8 +64,12 @@ public class Result<T> {
     }
 
     public Result<T> fail() {
-        this.code = ResponseInfo.FAIL.getCode();
-        this.message = ResponseInfo.FAIL.getMessage();
+        if (this.code != null) {
+            this.code = ResponseInfo.FAIL.getCode();
+        }
+        if (this.message != null) {
+            this.message = ResponseInfo.FAIL.getMessage();
+        }
         return this;
     }
 

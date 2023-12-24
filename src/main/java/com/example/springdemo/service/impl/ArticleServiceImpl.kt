@@ -17,7 +17,7 @@ import kotlin.random.Random
 class ArticleServiceImpl: ArticleService {
 
     @Resource
-    var articleMapper: ArticleMapper? = null
+    private var articleMapper: ArticleMapper? = null
 
     override fun addArticle(articleTitle: String, articleContent: String, userId: Long): ArticleVO {
         val article: Article = Article()

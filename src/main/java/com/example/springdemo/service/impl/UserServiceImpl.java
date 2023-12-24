@@ -6,7 +6,7 @@ import com.example.springdemo.bean.dao.User;
 import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.service.UserService;
 import com.example.springdemo.utils.CollectionUtil;
-import com.example.springdemo.utils.UserIdUtil;
+import com.example.springdemo.utils.UserInfoUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(String email, String userName, String password) {
         User user = new User();
-        user.setUserId(UserIdUtil.INSTANCE.generateUserId(email));
+        user.setUserId(UserInfoUtil.INSTANCE.generateUserId(email));
         user.setEmail(email);
         user.setUserName(userName);
         user.setUserNickname(userName);

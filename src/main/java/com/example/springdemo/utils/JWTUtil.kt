@@ -12,12 +12,19 @@ class JWTUtil {
             return Algorithm.HMAC256(secret)
         }
 
+        @JvmStatic
         fun createToken(userId: String, password: String): String {
             return JWT.create().withAudience(userId).sign(jwtAlgorithm(password))
         }
 
-        fun getUserIdFromToken(token: String): String {
+        @JvmStatic
+        fun getUserIdStrFromToken(token: String): String {
             return JWT.decode(token).audience[0]
+        }
+
+        @JvmStatic
+        fun getUserIdFromToken(token: String): Long {
+            return JWT.decode(token).audience[0].toLong()
         }
 
         fun verifyUserByToken(user: User, token: String) {

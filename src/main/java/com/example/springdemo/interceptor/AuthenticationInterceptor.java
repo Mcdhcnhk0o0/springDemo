@@ -1,12 +1,9 @@
 package com.example.springdemo.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.aliyuncs.utils.StringUtils;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.springdemo.annotation.PassToken;
 import com.example.springdemo.annotation.UserLoginToken;
 import com.example.springdemo.bean.dao.User;
-import com.example.springdemo.mapper.UserMapper;
 import com.example.springdemo.utils.JWTUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,7 +15,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.List;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
@@ -51,7 +47,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             }
             String userId = "";
             try {
-                userId = JWTUtil.Instance.getUserIdFromToken(token);
+                userId = JWTUtil.Instance.getUserIdStrFromToken(token);
             } catch (Exception e) {
                 throw new RuntimeException("token校验失败, " + e.getMessage());
             }

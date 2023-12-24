@@ -24,7 +24,7 @@ class ArticleController {
         @RequestParam(value = "articleContent") articleContent: String,
         @RequestHeader(value = "token") token: String
     ): Result<ArticleVO> {
-        val userId: Long = JWTUtil.getUserIdFromToken(token).toLong()
+        val userId: Long = JWTUtil.getUserIdStrFromToken(token).toLong()
         val articleResult = articleService?.addArticle(articleTitle, articleContent, userId)
         return Result<ArticleVO>().success(articleResult)
     }
@@ -34,7 +34,7 @@ class ArticleController {
     fun queryAllArticles(
         @RequestHeader(value = "token") token: String
     ): Result<List<Article>> {
-        val userId: Long = JWTUtil.getUserIdFromToken(token).toLong()
+        val userId: Long = JWTUtil.getUserIdStrFromToken(token).toLong()
         val articles = articleService?.queryAllArticles(userId)
         return Result<List<Article>>().success(articles)
     }

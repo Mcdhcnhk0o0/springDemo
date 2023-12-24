@@ -2,14 +2,13 @@ package com.example.springdemo.service.impl;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.springdemo.bean.dao.ChatRecord;
 import com.example.springdemo.bean.vo.protocol.Result;
 import com.example.springdemo.mapper.ChatRecordMapper;
-import com.example.springdemo.service.ChatRecordService;
+import com.example.springdemo.service.ChatService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,10 +16,15 @@ import java.util.List;
 
 @DS("chat")
 @Service
-public class ChatRecordServiceImpl implements ChatRecordService {
+public class ChatServiceImpl implements ChatService {
 
     @Resource
     private ChatRecordMapper chatRecordMapper;
+
+    @Override
+    public Result<Boolean> sendTo(Long sourceUserId, Long targetUserId, String message) {
+        return null;
+    }
 
     @Override
     public Result<Boolean> addChatRecord(Long from, Long to, String message) {

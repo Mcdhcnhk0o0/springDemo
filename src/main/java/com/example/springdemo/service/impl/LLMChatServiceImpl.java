@@ -2,7 +2,7 @@ package com.example.springdemo.service.impl;
 
 import com.example.springdemo.bean.vo.LLMVO;
 import com.example.springdemo.bean.vo.protocol.Result;
-import com.example.springdemo.service.ChatRecordService;
+import com.example.springdemo.service.ChatService;
 import com.example.springdemo.service.LLMChatService;
 import com.example.springdemo.service.third.LLMChatRecorder;
 import com.example.springdemo.service.third.SparkLLMService;
@@ -25,7 +25,7 @@ public class LLMChatServiceImpl implements LLMChatService {
     private SparkLLMService llmService;
 
     @Resource
-    private ChatRecordService chatRecordService;
+    private ChatService chatRecordService;
 
     private WebSocket webSocket;
 
