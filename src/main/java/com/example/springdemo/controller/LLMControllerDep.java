@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/llm")
+@RequestMapping("/llm_old")
 @CrossOrigin
-public class LLMController {
+public class LLMControllerDep {
 
     @Resource
     private LLMChatService llmChatService;

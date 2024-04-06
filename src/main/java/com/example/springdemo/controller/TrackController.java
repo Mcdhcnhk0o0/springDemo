@@ -45,4 +45,13 @@ public class TrackController {
         return trackService.getRecentTrackEvent(userId, eventType, pageNum, pageSize);
     }
 
+    @UserLoginToken
+    @PostMapping("/validate")
+    public Result<Boolean> validateTrackEventAsync(
+            @RequestHeader(value = "token") String token,
+            @RequestBody List<TrackEvent> trackEvents
+    ) {
+        return new Result<Boolean>().success(false);
+    }
+
 }

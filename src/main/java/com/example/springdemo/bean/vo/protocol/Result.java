@@ -73,4 +73,14 @@ public class Result<T> {
         return this;
     }
 
+    public Result<T> fail(String info) {
+        this.code = ResponseInfo.FAIL.getCode();
+        if (info != null) {
+            this.message = info;
+        } else {
+            this.message = ResponseInfo.FAIL.getMessage();
+        }
+        return this;
+    }
+
 }

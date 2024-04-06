@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -18,6 +19,7 @@ public class WebSocketService {
     private Session session;
 
     private static final ConcurrentHashMap<Long, Session> sessionPool = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Session, Long> userPool = new ConcurrentHashMap<>();
 
     private static final CopyOnWriteArraySet<WebSocketService> webSocketServices = new CopyOnWriteArraySet<>();
 
@@ -35,6 +37,7 @@ public class WebSocketService {
         }
         this.session = session;
         webSocketServices.add(this);
+        userPool.put(session, userId);
         sessionPool.put(userId, session);
         log.info("connection established! Total number of service: " + webSocketServices.size());
     }
@@ -50,10 +53,25 @@ public class WebSocketService {
         log.info("websocket disconnected! Total number of service: " + webSocketServices.size());
     }
 
+    public boolean connectedWith(Long userId) {
+        return sessionPool.containsKey(userId);
+    }
+
     @OnMessage
     public void onMessage(String message) {
         log.info("message received! Content: " + message);
-        sendMessageToUser(123L, "I received: " + message);
+        Long userId = userPool.get(session);
+        sendMessageToUser(userId, "I received: " + message);
+    }
+
+    public void sendToUser(Long userId, String message) {
+        log.info("send message to " + userId + ", message: " + message);
+        Session session = sessionPool.get(userId);
+        try {
+            session.getBasicRemote().sendText(message);
+        } catch (Exception e) {
+            log.error("errors in sending message: " + Arrays.toString(e.getStackTrace()));
+        }
     }
 
     public static void sendMessageToUser(Long userId, String message) {
@@ -62,7 +80,7 @@ public class WebSocketService {
         try {
             session.getBasicRemote().sendText(message);
         } catch (Exception e) {
-            log.error("errors in sending message: " + e.getMessage());
+            log.error("errors in sending message: " + Arrays.toString(e.getStackTrace()));
         }
     }
 

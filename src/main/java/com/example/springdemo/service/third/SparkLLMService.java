@@ -60,8 +60,7 @@ public class SparkLLMService extends WebSocketListener {
             String authUrl = LLMUtil.getAuthUrl(hostUrl, llmConfig.getApiKey(), llmConfig.getApiSecret());
             log.debug("apiKey" + llmConfig.getApiKey() + ", secret: " + llmConfig.getApiSecret());
             OkHttpClient client = new OkHttpClient.Builder().build();
-            String url = authUrl.replace("http://", "ws://").replace("https://", "wss://");
-            Request request = new Request.Builder().url(url).build();
+            Request request = new Request.Builder().url(authUrl).build();
             LLMChatRecorder.getInstance().setResponseComplete(false);
             webSocket = client.newWebSocket(request, this);
         } catch (Exception e) {
@@ -78,7 +77,7 @@ public class SparkLLMService extends WebSocketListener {
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
-        WebSocketService.sendMessageToUser(123L, text);
+        WebSocketService.sendMessageToUser(userId, text);
         LLMDTO response = JSON.parseObject(text, LLMDTO.class);
         if (!LLMUtil.llmResponseValid(response)) {
             log.error("发生错误，错误码为：" + response.header.code);
