@@ -33,7 +33,7 @@ public class LLMServiceImpl implements LLMService {
     @Override
     public Result<String> sendMessageSync(Long userId, String query, Type type, boolean withContext) {
         if (type == null) {
-            type = getDefaultLLMType();
+            type = Type.getDefault();
         }
         IService service = llmService.getService(type);
         if (service == null) {
@@ -87,10 +87,6 @@ public class LLMServiceImpl implements LLMService {
         Message currentMessage = new Message(Role.USER, message);
         queryMessages.add(currentMessage);
         return queryMessages;
-    }
-
-    private Type getDefaultLLMType() {
-        return Type.TONG_YI;
     }
 
 }

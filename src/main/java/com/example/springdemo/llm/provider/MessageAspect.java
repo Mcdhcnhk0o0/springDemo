@@ -24,7 +24,7 @@ public class MessageAspect {
     @Resource
     private ChatService chatService;
 
-    @Pointcut("execution(* com.example.springdemo.llm.LLMService.sendMessageSync())")
+    @Pointcut("execution(* com.example.springdemo.llm.LLMServiceImpl.sendMessageSync(..))")
     public void PointCut() {}
 
     @Around("PointCut()")
@@ -60,9 +60,10 @@ public class MessageAspect {
             Message queryMessage = new Message(Role.USER, message);
             if (userId != null) {
                 MessageContext.getInstance().remember(userId, queryMessage);
-                if (type != null) {
-                    chatService.addChatRecord(userId, type.toCode(), message);
+                if (type == null) {
+                    type = Type.getDefault();
                 }
+                chatService.addChatRecord(userId, type.toCode(), message);
             }
         }
     }

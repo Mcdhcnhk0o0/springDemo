@@ -39,4 +39,8 @@ public enum Type {
         return null;
     }
 
+    public static Type getDefault() {
+        return Type.TONG_YI;
+    }
+
 }
