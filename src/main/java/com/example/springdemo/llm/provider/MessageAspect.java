@@ -73,9 +73,10 @@ public class MessageAspect {
             Message queryMessage = new Message(Role.ASSISTANT, message);
             if (userId != null) {
                 MessageContext.getInstance().remember(userId, queryMessage);
-                if (type != null) {
-                    chatService.addChatRecord(userId, type.toCode(), message);
+                if (type == null) {
+                    type = Type.getDefault();
                 }
+                chatService.addChatRecord(userId, type.toCode(), message);
             }
         }
     }

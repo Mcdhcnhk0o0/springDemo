@@ -19,16 +19,16 @@ public class LLMController {
     @Resource
     private LLMService llmService;
 
-    @PassToken
+    @UserLoginToken
     @GetMapping("/send/sync")
     public Result<String> sendMessageSync(
-//            @RequestHeader(value = "token") String token,
+            @RequestHeader(value = "token") String token,
             @RequestParam(value = "message") String message,
             @RequestParam(value = "typeCode", required = false) Long typeCode,
             @RequestParam(value = "withContext", defaultValue = "false") Boolean withContext
     ) {
-//        Long userId = getUserIdFromToken(token);
-        return llmService.sendMessageSync(0L, message, Type.fromCode(typeCode), withContext);
+        Long userId = getUserIdFromToken(token);
+        return llmService.sendMessageSync(userId, message, Type.fromCode(typeCode), withContext);
     }
 
     @UserLoginToken
