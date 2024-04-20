@@ -1,6 +1,8 @@
 package com.example.springdemo.service;
 
 
+import com.alibaba.fastjson.JSON;
+import com.example.springdemo.bean.dto.message.WebsocketMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -72,6 +74,11 @@ public class WebSocketService {
         } catch (Exception e) {
             log.error("errors in sending message: " + Arrays.toString(e.getStackTrace()));
         }
+    }
+
+    public void sendToUser(Long userId, WebsocketMessage message) {
+        String messageStr = JSON.toJSONString(message);
+        sendToUser(userId, messageStr);
     }
 
     public static void sendMessageToUser(Long userId, String message) {

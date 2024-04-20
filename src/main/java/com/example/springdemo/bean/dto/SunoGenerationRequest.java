@@ -4,7 +4,7 @@ package com.example.springdemo.bean.dto;
 import lombok.Data;
 
 @Data
-public class SunoGenerationBean {
+public class SunoGenerationRequest {
 
     private String title;
     private String lyric;
