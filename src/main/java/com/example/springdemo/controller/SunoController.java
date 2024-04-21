@@ -12,6 +12,7 @@ import com.example.springdemo.utils.UserInfoUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/suno")
@@ -63,7 +64,7 @@ public class SunoController {
 
     @UserLoginToken
     @GetMapping("/get/history")
-    public Result<SunoGenerationDTO> getGenerationHistory(
+    public Result<List<SunoClipDTO>> getGenerationHistory(
             @RequestHeader(value = "token") String token,
             @RequestParam(value = "pageNum") Integer pageNum
     ) {

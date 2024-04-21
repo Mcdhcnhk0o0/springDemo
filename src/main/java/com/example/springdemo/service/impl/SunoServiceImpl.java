@@ -102,12 +102,12 @@ public class SunoServiceImpl implements SunoService {
 
 
     @Override
-    public Result<SunoGenerationDTO> getGenerationHistory(int pageNum) {
+    public Result<List<SunoClipDTO>> getGenerationHistory(int pageNum) {
         String url = innerServerUrl + "feeds/" + pageNum;
         String responseBody = httpService.get(url).getData();
         log.info("history response from suno: \n" + responseBody.substring(0, Math.min(responseBody.length(), 200)));
-        SunoGenerationDTO generationDTO = JSONObject.parseObject(responseBody, SunoGenerationDTO.class);
-        return new Result<SunoGenerationDTO>().success(generationDTO);
+        List<SunoClipDTO> generationDTO = JSONObject.parseArray(responseBody, SunoClipDTO.class);
+        return new Result<List<SunoClipDTO>>().success(generationDTO);
     }
 
     @Override

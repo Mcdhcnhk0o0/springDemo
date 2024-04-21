@@ -13,7 +13,7 @@ public interface SunoService {
 
     Result<SunoGenerationDTO> generateByCustom(Long userId, SunoGenerationRequest request, boolean await);
 
-    Result<SunoGenerationDTO> getGenerationHistory(int pageNum);
+    Result<List<SunoClipDTO>> getGenerationHistory(int pageNum);
 
     Result<SunoClipDTO> getGenerationById(String id);
 
