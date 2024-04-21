@@ -12,11 +12,9 @@ import com.example.springdemo.service.WebSocketService;
 import com.example.springdemo.service.helper.SunoScheduleHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
-import java.util.concurrent.*;
 
 
 @Slf4j
@@ -54,6 +52,7 @@ public class SunoServiceImpl implements SunoService {
 
     private Result<SunoGenerationDTO> getSunoGenerationDTOResult(Long userId, boolean await, String url, Map<String, Object> params) {
         String responseBody = httpService.post(url, params).getData();
+        log.info("task response from suno: \n" + responseBody.substring(0, Math.max(responseBody.length(), 200)));
         SunoGenerationDTO generationDTO = JSONObject.parseObject(responseBody, SunoGenerationDTO.class);
         if (await && userId != null) {
             List<SunoClipDTO> fullClips = awaitGeneration(userId, generationDTO.getClips()).getData();
@@ -106,6 +105,7 @@ public class SunoServiceImpl implements SunoService {
     public Result<SunoGenerationDTO> getGenerationHistory(int pageNum) {
         String url = innerServerUrl + "feeds/" + pageNum;
         String responseBody = httpService.get(url).getData();
+        log.info("history response from suno: \n" + responseBody.substring(0, Math.max(responseBody.length(), 200)));
         SunoGenerationDTO generationDTO = JSONObject.parseObject(responseBody, SunoGenerationDTO.class);
         return new Result<SunoGenerationDTO>().success(generationDTO);
     }
@@ -114,6 +114,7 @@ public class SunoServiceImpl implements SunoService {
     public Result<SunoClipDTO> getGenerationById(String id) {
         String url = innerServerUrl + "feed/" + id;
         String responseBody = httpService.get(url).getData();
+        log.info("generation feed response from suno: \n" + responseBody.substring(0, Math.max(responseBody.length(), 200)));
         List<SunoClipDTO> generationDTO = JSONObject.parseArray(responseBody, SunoClipDTO.class);
         if (generationDTO != null && generationDTO.size() > 0) {
             return new Result<SunoClipDTO>().success(generationDTO.get(0));
