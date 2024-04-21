@@ -70,13 +70,13 @@ public class MessageAspect {
 
     private void afterReceiveMessage(Long userId, String message, Type type) {
         if (message != null) {
-            Message queryMessage = new Message(Role.ASSISTANT, message);
+            Message replyMessage = new Message(Role.ASSISTANT, message);
             if (userId != null) {
-                MessageContext.getInstance().remember(userId, queryMessage);
+                MessageContext.getInstance().remember(userId, replyMessage);
                 if (type == null) {
                     type = Type.getDefault();
                 }
-                chatService.addChatRecord(userId, type.toCode(), message);
+                chatService.addChatRecord(type.toCode(), userId, message);
             }
         }
     }
