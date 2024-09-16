@@ -12,6 +12,7 @@ import com.example.springdemo.llm.message.TypedMessageFactory;
 import com.example.springdemo.llm.protocol.Type;
 import com.example.springdemo.llm.provider.TypedService;
 import org.springframework.stereotype.Service;
+import io.reactivex.Flowable;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -56,7 +57,32 @@ public class AliLLMService extends TypedService {
 
     @Override
     public String invokeAsync(List<Message> messages, MessageAsyncListener responseListener) {
-        return null;
+        final TypedMessageFactory factory = new AliMessageFactory();
+        List<com.alibaba.dashscope.common.Message> aliMessageList = new ArrayList<>();
+        messages.forEach(message -> aliMessageList.add(
+                (com.alibaba.dashscope.common.Message) factory.createTypedMessage(provider(), message)
+        ));
+        GenerationParam param = GenerationParam.builder()
+                .model("qwen-turbo")
+                .messages(aliMessageList)
+                .resultFormat(GenerationParam.ResultFormat.MESSAGE)
+                .topP(0.8)
+                .enableSearch(true)
+                .incrementalOutput(true)
+                .build();
+        Flowable<GenerationResult> resultFlowable;
+        try {
+            resultFlowable = generation.streamCall(param);
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        StringBuilder fullContent = new StringBuilder();
+        resultFlowable.blockingForEach(result -> {
+            fullContent.append(result.getOutput().getChoices().get(0).getMessage().getContent());
+            responseListener.onStream(fullContent.toString());
+        });
+        responseListener.onFinish();
+        return fullContent.toString();
     }
 
     @Override
