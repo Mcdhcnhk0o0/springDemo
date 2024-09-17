@@ -1,5 +1,6 @@
 package com.example.springdemo;
 
+import com.example.springdemo.utils.EncryptorUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

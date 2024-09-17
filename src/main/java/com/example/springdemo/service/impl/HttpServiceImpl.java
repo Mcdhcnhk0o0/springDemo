@@ -21,7 +21,12 @@ public class HttpServiceImpl implements HttpService {
 
     @Override
     public Result<String> get(String url) {
-        HttpEntity<String> requestEntity = new HttpEntity<>("", commonHeader());
+        return get(url, null);
+    }
+
+    @Override
+    public Result<String> get(String url, Map<String, Object> headers) {
+        HttpEntity<String> requestEntity = new HttpEntity<>("", getHeaders(headers));
         ResponseEntity<String> responseEntity;
         responseEntity = restTemplate.exchange(
                 url,
@@ -34,7 +39,12 @@ public class HttpServiceImpl implements HttpService {
 
     @Override
     public Result<String> post(String url, Map<String, Object> body) {
-        HttpEntity<String> requestEntity = new HttpEntity<>(JSON.toJSONString(body), commonHeader());
+        return post(url, body, null);
+    }
+
+    @Override
+    public Result<String> post(String url, Map<String, Object> body, Map<String, Object> headers) {
+        HttpEntity<String> requestEntity = new HttpEntity<>(JSON.toJSONString(body), getHeaders(headers));
         ResponseEntity<String> responseEntity;
         responseEntity = restTemplate.exchange(
                 url,
@@ -46,10 +56,16 @@ public class HttpServiceImpl implements HttpService {
     }
 
     @NotNull
-    private HttpHeaders commonHeader() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return headers;
+    private HttpHeaders getHeaders(Map<String, Object> headers) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if (headers == null || headers.isEmpty()) {
+            httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+            return httpHeaders;
+        }
+        for (Map.Entry<String, Object> entry: headers.entrySet()) {
+            httpHeaders.set(entry.getKey(), String.valueOf(entry.getValue()));
+        }
+        return httpHeaders;
     }
 
 }

@@ -10,4 +10,8 @@ public interface HttpService {
 
     Result<String> post(String url, Map<String, Object> body);
 
+    Result<String> get(String url, Map<String, Object> headers);
+
+    Result<String> post(String url, Map<String, Object> body, Map<String, Object> headers);
+
 }
