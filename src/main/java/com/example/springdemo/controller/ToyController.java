@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.springdemo.annotation.PassToken;
 import com.example.springdemo.annotation.UserLoginToken;
 import com.example.springdemo.bean.vo.protocol.Result;
+import com.example.springdemo.nacos.NacosClient;
+import com.example.springdemo.nacos.NacosTemplate;
+import com.example.springdemo.utils.EncryptorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,9 @@ import javax.annotation.Resource;
 @RequestMapping("/toy")
 @CrossOrigin
 public class ToyController {
+
+    @Resource
+    private NacosTemplate nacosTemplate;
 
     @PassToken
     @GetMapping("/get_id_by_name")
@@ -41,6 +47,14 @@ public class ToyController {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("coin", String.valueOf(id.hashCode()));
         return jsonObject;
+    }
+
+    @PassToken
+    @GetMapping("/config")
+    public String getConfig(
+            @RequestParam(value = "key") String key
+    ) {
+        return nacosTemplate.getConfig(key);
     }
 
 }

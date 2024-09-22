@@ -11,6 +11,7 @@ import com.example.springdemo.llm.message.MessageAsyncListener;
 import com.example.springdemo.llm.message.TypedMessageFactory;
 import com.example.springdemo.llm.protocol.Type;
 import com.example.springdemo.llm.provider.TypedService;
+import com.example.springdemo.nacos.NacosTemplate;
 import org.springframework.stereotype.Service;
 import io.reactivex.Flowable;
 
@@ -26,6 +27,9 @@ public class AliLLMService extends TypedService {
 
     @Resource
     private AliCloudApiConfig config;
+
+    @Resource
+    private NacosTemplate nacosTemplate;
 
     @Override
     public void init() {
@@ -87,7 +91,7 @@ public class AliLLMService extends TypedService {
 
     @Override
     public String apiKey() {
-        return config.getApiKey();
+        return nacosTemplate.getConfig("llm.authorization/ali.tongyi.ak");
     }
 
     @Override

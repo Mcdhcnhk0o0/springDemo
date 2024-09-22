@@ -1,5 +1,7 @@
 package com.example.springdemo;
 
+import com.example.springdemo.nacos.NacosClient;
+import com.example.springdemo.nacos.NacosConfig;
 import com.example.springdemo.utils.EncryptorUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +15,7 @@ public class SpringDemoApplication {
         SpringApplication.run(SpringDemoApplication.class, args);
         System.out.println("==== Spring Demo start ====");
         System.out.println(System.currentTimeMillis());
+        NacosClient.getInstance().initAndListen();
     }
 
 }
